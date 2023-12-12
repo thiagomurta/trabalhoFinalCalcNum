@@ -29,10 +29,23 @@ def solveSystem(x, tol, kmax):
         x = x + dx
         F = residuo(x)
         k = k+1
-    return k, F
+        erro = np.linalg.norm(dx)/np.linalg.norm(x)
+    return k, F, erro
 
 x = np.array([ [1.5], [3.5]])
 tol = 10e-4
 
 tamMax = 100
-k, F = solveSystem(x, tol, tamMax)
+k, F, erro = solveSystem(x, tol, tamMax)
+print("Número de interações: ", k)
+print("F encontrado: ", F)
+print("Erro: ", erro)
+
+xk = np.linspace(0, k, 100)
+y = np.linalg.norm(F)
+yk = np.linspace(0, y, 100)
+
+plt.plot(xk, yk)
+plt.xlabel('k')
+plt.ylabel('||F(x)||')
+plt.show()
