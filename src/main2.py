@@ -16,7 +16,7 @@ def Jacobiana(x, u, valorLambda,  quantValores):
         j[i,i] = 2 - h**2 * valorLambda * np.exp(u[i])
     return j
 
-def residuo(x, u, valorLambda, quantValores):
+def residuo(x,u, valorLambda, quantValores):
     n = len(x)
     F = np.zeros([n])
     F[0]    = 0
@@ -43,6 +43,7 @@ def solveSystem(x, u, valorLambda, tol, kmax, quantValores):
         k = k+1
         fnorm = np.linalg.norm(F)
         error.append(fnorm)
+    print("Total de Interações: ", k)
     return u, error, x
 
 
@@ -55,23 +56,18 @@ def bratu_problem(N,_lambda):
 
 
 N_valores = [10,50,100]
+lambdaVal = [1,2,3,4,5,6]
 
-print("-----10-----")
-u, erro, x = bratu_problem(N_valores[0], 2)
-print("Erro: ", np.linalg.norm(erro))
-plt.plot(x, u, color='blue')
-
-print("-----50-----")
-u1, erro1, x1 = bratu_problem(N_valores[1], 2)
-print("Erro: ", np.linalg.norm(erro1))
-plt.plot(x1, u1, color='green')
-
-print("-----100-----")
-u2, erro2, x2 = bratu_problem(N_valores[2], 2)
-print("Erro: ", np.linalg.norm(erro2))
-plt.plot(x2, u2, color='red')
+for i in lambdaVal:
+    print("--------Lambda {}--------".format(i))
+    for n in N_valores:
+        print("-----{}-----". format(n))
+        u, erro, x = bratu_problem(n, i)
+        print("Erro: ", np.linalg.norm(erro))
+        plt.plot(x,u, label= f'λ = {i}, N = {n}')
+        plt.legend()
+        print()
 
 plt.xlabel('x')
 plt.ylabel('u(x)')
-plt.gca().legend(('N=10','N=50','N=100'))
 plt.show()
